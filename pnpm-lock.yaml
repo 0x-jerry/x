@@ -10,7 +10,7 @@ dependencies:
     version: 0.1.5
   '@0x-jerry/utils':
     specifier: ^2.1.1
-    version: 2.1.1
+    version: 2.1.2
   decompress:
     specifier: ^4.2.1
     version: 4.2.1
@@ -78,13 +78,13 @@ packages:
     resolution: {integrity: sha512-1i/2s+2+4Syf4mpqn0Uy6BtYWHCe5sodsKHobkcTpK2BZci+rrSQir8bPVr2o2zICLhnPFuTzmbnw/b+YMSpIA==}
     engines: {node: '>= 18'}
     dependencies:
-      '@0x-jerry/utils': 2.1.1
+      '@0x-jerry/utils': 2.1.2
       lodash-es: 4.17.21
       minimist: 1.2.8
     dev: false
 
-  /@0x-jerry/utils@2.1.1:
-    resolution: {integrity: sha512-VNF9b4CFEW+I+hqmA/RKf7KrV9QXe4GCQS958iew0lvTqslaArYKk1gZvwj1zGCUwo6LBXCYEKjzPf5e/PEPBQ==}
+  /@0x-jerry/utils@2.1.2:
+    resolution: {integrity: sha512-Gd2bA/552B5FfcRCW0cd4skTtO61Abovl2phLgeGbmD60jgm6LuwwlpwdTEibtBzH24tpVyBfRAyhK71DZ02ig==}
     dependencies:
       fflate: 0.8.2
       nanoid: 5.0.6
