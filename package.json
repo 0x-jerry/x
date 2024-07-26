@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@0x-jerry/silver": "^1.0.3",
-    "@0x-jerry/utils": "^2.4.3",
+    "@0x-jerry/utils": "^3.0.0",
     "decompress": "^4.2.1",
     "fs-extra": "^11.2.0",
     "global-agent": "^3.0.0",
