@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@0x-jerry/x-release": "^2.2.2",
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.0.0",
     "@types/decompress": "^4.2.7",
     "@types/fs-extra": "^11.0.4",
     "@types/global-agent": "^3.0.0",
