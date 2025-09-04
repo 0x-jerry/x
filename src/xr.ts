@@ -19,18 +19,17 @@ ins.type('command', async () => {
 async function defaultAction(_: string[], arg: ActionParsedArgs) {
   const [commandOrFile, ...params] = arg._
 
-  if (isJsFile(commandOrFile)) {
-    await exec('node', [
-      '--import',
-      import.meta.resolve(`./hooks/register.js`),
-      commandOrFile,
-    ])
-    return
-  }
-
   try {
-    await runScript(commandOrFile, params)
-  } catch (error) {
+    if (isJsFile(commandOrFile)) {
+      await exec(
+        'node',
+        ['--import', import.meta.resolve(`./hooks/register.js`), commandOrFile],
+        { silent: true },
+      )
+    } else {
+      await runScript(commandOrFile, params)
+    }
+  } catch (_error) {
     // ignore error
     process.exit(1)
   }

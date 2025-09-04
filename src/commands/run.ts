@@ -20,7 +20,7 @@ export async function runScript(command: string, params: string[] = []) {
       const task = await taskDetector.task(cwd, command)
       if (task) {
         const env = makeEnv((await taskDetector.binaryPaths?.(cwd)) || [])
-        await exec(task, params, env)
+        await exec(task, params, { env })
         return
       }
     }

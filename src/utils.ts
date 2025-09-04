@@ -1,14 +1,14 @@
-import { type PathLike, existsSync } from 'node:fs'
-import { exec as _exec } from '@0x-jerry/utils/node'
+import { existsSync, type PathLike } from 'node:fs'
+import { exec as _exec, type ExecOptions } from '@0x-jerry/utils/node'
 
 export async function exec(
   script: string,
   params: string[],
-  env?: Record<string, string | undefined>,
+  opt?: ExecOptions,
 ) {
   const cmd = [script, ...params].join(' ')
 
-  await _exec(cmd, { env })
+  await _exec(cmd, opt)
 }
 
 export function exists(path: PathLike) {
