@@ -10,8 +10,8 @@ const supportedExtensions = ['.txt', '.sql', '.md']
 
 const FORMAT_TYPE = 'text'
 
-const resolve: ResolveHookSync = (specifier, _ctx, nextResolve) => {
-  const nextResult = nextResolve(specifier)
+const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
+  const nextResult = nextResolve(specifier, ctx)
 
   const ext = path.extname(specifier)
 

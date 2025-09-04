@@ -11,8 +11,8 @@ const supportedExtensions = ['.yaml', '.yml']
 
 const FORMAT_TYPE = 'yaml'
 
-const resolve: ResolveHookSync = (specifier, _ctx, nextResolve) => {
-  const nextResult = nextResolve(specifier)
+const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
+  const nextResult = nextResolve(specifier, ctx)
 
   const ext = path.extname(specifier)
 
@@ -27,7 +27,7 @@ const resolve: ResolveHookSync = (specifier, _ctx, nextResolve) => {
 const load: LoadHookSync = (url, ctx, nextLoad) => {
   if (ctx.format !== FORMAT_TYPE) return nextLoad(url, ctx)
 
-  const nextResult = nextLoad(url, { format: 'module' })
+  const nextResult = nextLoad(url, ctx)
   const source = yaml.parse(sourceToStr(nextResult.source))
 
   return {

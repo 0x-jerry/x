@@ -11,8 +11,8 @@ const supportedExtensions = ['.jsonc']
 
 const FORMAT_TYPE = 'jsonc'
 
-const resolve: ResolveHookSync = (specifier, _ctx, nextResolve) => {
-  const nextResult = nextResolve(specifier)
+const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
+  const nextResult = nextResolve(specifier, ctx)
 
   const ext = path.extname(specifier)
 
