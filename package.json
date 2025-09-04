@@ -34,7 +34,8 @@
     "entry": [
       "src/xr.ts",
       "src/xn.ts",
-      "src/x.ts"
+      "src/x.ts",
+      "src/preload.js"
     ],
     "format": [
       "esm"
@@ -44,6 +45,12 @@
   "dependencies": {
     "@0x-jerry/silver": "^1.1.1",
     "@0x-jerry/utils": "^5.0.0",
+    "@nodejs-loaders/alias": "^2.1.2",
+    "@nodejs-loaders/json5": "^1.1.0",
+    "@nodejs-loaders/jsonc": "^1.1.0",
+    "@nodejs-loaders/text": "^1.1.0",
+    "@nodejs-loaders/tsx": "^1.1.2",
+    "@nodejs-loaders/yaml": "^1.1.0",
     "decompress": "^4.2.1",
     "fs-extra": "^11.3.1",
     "global-agent": "^3.0.0",
