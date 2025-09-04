@@ -1,8 +1,15 @@
-// npm run dev:xr -- tests/test.ts 
-import textData from './test.txt'
-import yamlData from './test.yaml'
-import jsoncData from './test.jsonc'
+// npm run build && ./dist/xr.js tests/test.ts 
+
+import '@0x-jerry/utils/node'
 
 const count: number = 3;
+console.log(count)
 
-console.log(textData, jsoncData, yamlData, count)
+import textData from './test.txt'
+console.log(textData)
+
+import yamlData from './test.yaml'
+console.log(yamlData)
+
+import jsoncData from './test.jsonc'
+console.log(jsoncData)

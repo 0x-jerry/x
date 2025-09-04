@@ -1,8 +1,4 @@
-import {
-  type LoadHookSync,
-  type ResolveHookSync,
-  registerHooks,
-} from 'node:module'
+import type { LoadHook, ResolveHook } from 'node:module'
 import path from 'node:path'
 import { sourceToStr } from './utils'
 
@@ -10,8 +6,8 @@ const supportedExtensions = ['.txt', '.sql', '.md']
 
 const FORMAT_TYPE = 'text'
 
-const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
-  const nextResult = nextResolve(specifier, ctx)
+export const resolve: ResolveHook = async (specifier, ctx, nextResolve) => {
+  const nextResult = await nextResolve(specifier, ctx)
 
   const ext = path.extname(specifier)
 
@@ -23,8 +19,8 @@ const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
   }
 }
 
-const load: LoadHookSync = (url, ctx, nextLoad) => {
-  const nextResult = nextLoad(url, ctx)
+export const load: LoadHook = async (url, ctx, nextLoad) => {
+  const nextResult = await nextLoad(url, ctx)
 
   if (ctx.format !== FORMAT_TYPE) return nextResult
 
@@ -35,8 +31,3 @@ const load: LoadHookSync = (url, ctx, nextLoad) => {
     source,
   }
 }
-
-registerHooks({
-  resolve,
-  load,
-})

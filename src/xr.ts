@@ -3,7 +3,6 @@ import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
 import { version } from '../package.json'
 import { getAvailableCommands, runScript } from './commands/run'
 import { exec } from './utils'
-import path from 'node:path'
 
 const ins = sliver`
 v${version} @help @autocompletion
@@ -21,9 +20,11 @@ async function defaultAction(_: string[], arg: ActionParsedArgs) {
   const [commandOrFile, ...params] = arg._
 
   if (isJsFile(commandOrFile)) {
-    const registerFilePath = path.join(import.meta.dirname, './preload.js')
-
-    await exec('node', ['--import', registerFilePath, commandOrFile])
+    await exec('node', [
+      '--import',
+      import.meta.resolve(`./hooks/register.js`),
+      commandOrFile,
+    ])
     return
   }
 

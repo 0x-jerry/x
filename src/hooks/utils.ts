@@ -1,4 +1,4 @@
-import type { ModuleSource } from 'node:module'
+import type { LoadHook, ModuleSource, ResolveHook } from 'node:module'
 
 export function sourceToStr(source?: ModuleSource) {
   if (!source) return ''
@@ -12,4 +12,20 @@ export function sourceToStr(source?: ModuleSource) {
   }
 
   return Buffer.from(source.buffer).toString('utf-8')
+}
+
+export function chainHooks<T extends LoadHook | ResolveHook>(fns: T[]): T {
+  const wrapperFn = (a: unknown, b: unknown, defaultHook: any) => {
+    const fn = fns.reduceRight((prev, hook) => {
+      return (a: any, b: any) => {
+        // console.log(a, b, hook)
+        return hook(a, b, prev)
+      }
+    }, defaultHook)
+
+    // console.log(a, b, fn)
+    return fn(a, b)
+  }
+
+  return wrapperFn as T
 }

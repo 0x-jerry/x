@@ -1,8 +1,4 @@
-import {
-  type LoadHookSync,
-  type ResolveHookSync,
-  registerHooks,
-} from 'node:module'
+import type { LoadHook, ResolveHook } from 'node:module'
 import path from 'node:path'
 import yaml from 'yaml'
 import { sourceToStr } from './utils'
@@ -11,8 +7,8 @@ const supportedExtensions = ['.yaml', '.yml']
 
 const FORMAT_TYPE = 'yaml'
 
-const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
-  const nextResult = nextResolve(specifier, ctx)
+export const resolve: ResolveHook = async (specifier, ctx, nextResolve) => {
+  const nextResult = await nextResolve(specifier, ctx)
 
   const ext = path.extname(specifier)
 
@@ -24,10 +20,10 @@ const resolve: ResolveHookSync = (specifier, ctx, nextResolve) => {
   }
 }
 
-const load: LoadHookSync = (url, ctx, nextLoad) => {
+export const load: LoadHook = async (url, ctx, nextLoad) => {
   if (ctx.format !== FORMAT_TYPE) return nextLoad(url, ctx)
 
-  const nextResult = nextLoad(url, ctx)
+  const nextResult = await nextLoad(url, ctx)
   const source = yaml.parse(sourceToStr(nextResult.source))
 
   return {
@@ -35,8 +31,3 @@ const load: LoadHookSync = (url, ctx, nextLoad) => {
     source: JSON.stringify(source),
   }
 }
-
-registerHooks({
-  resolve,
-  load,
-})
