@@ -1,6 +1,7 @@
+import { readFile } from 'node:fs/promises'
 import type { LoadFnOutput, LoadHook, ResolveHook } from 'node:module'
+import { fileURLToPath } from 'node:url'
 import type { Awaitable } from '@0x-jerry/utils'
-import { sourceToStr } from './utils'
 
 export interface ModuleHook {
   load: LoadHook
@@ -31,11 +32,11 @@ export function createModuleHook({
   }
 
   const load: LoadHook = async (url, ctx, nextLoad) => {
-    const nextResult = await nextLoad(url, ctx)
+    if (ctx.format !== type) return nextLoad(url, ctx)
 
-    if (ctx.format !== type) return nextResult
+    const raw = await readFile(fileURLToPath(url), 'utf-8')
 
-    const source = await loader(sourceToStr(nextResult.source))
+    const source = await loader(raw)
 
     return {
       shortCircuit: true,
