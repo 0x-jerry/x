@@ -1,17 +1,13 @@
 import type { LoadHook, ResolveHook } from 'node:module'
 // @ts-expect-error
 import * as tsx from 'tsx/esm'
-import * as jsonc from './jsonc'
-import * as text from './text'
+import type { ModuleHook } from './helper'
+import jsonc from './jsonc'
+import text from './text'
 import { chainHooks } from './utils'
-import * as yaml from './yaml'
+import yaml from './yaml'
 
-interface Hook {
-  load: LoadHook
-  resolve: ResolveHook
-}
-
-const hooks: Hook[] = [jsonc, text, yaml, tsx]
+const hooks: ModuleHook[] = [jsonc, text, yaml, tsx]
 
 export const resolve: ResolveHook = chainHooks(hooks.map((n) => n.resolve))
 

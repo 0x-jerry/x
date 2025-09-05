@@ -8,7 +8,8 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
-			"src/**/*"
+			"src/**/*",
+			"test/**/*"
 		]
 	},
 	"formatter": {
