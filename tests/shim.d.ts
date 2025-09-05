@@ -4,6 +4,11 @@ declare module "*.txt" {
     export default data
 }
 
+declare module "*.sql" {
+    const data: string
+    export default data
+}
+
 
 // ---------- jsonc
 

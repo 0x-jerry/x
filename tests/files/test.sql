@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS "repo_content" (
+  "url" TEXT PRIMARY KEY NOT NULL,
+  "readme" TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "repo_info" (
+  "url" TEXT PRIMARY KEY NOT NULL,
+  "tags" TEXT NOT NULL,
+  "desc" TEXT NOT NULL
+);

@@ -13,3 +13,7 @@ console.log(yamlData)
 
 import jsoncData from './test.jsonc'
 console.log(jsoncData)
+
+import sqlStr from './files/test.sql'
+
+console.log(sqlStr)
