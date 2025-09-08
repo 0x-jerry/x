@@ -1,7 +1,7 @@
 import stripJsonComment from 'strip-json-comments'
 import { createModuleHook } from './helper'
 
-export default createModuleHook({
+const { load, resolve } = createModuleHook({
   type: 'jsonc',
   loader(rawSource) {
     const source = stripJsonComment(rawSource)
@@ -12,3 +12,5 @@ export default createModuleHook({
     }
   },
 })
+
+export { load, resolve }

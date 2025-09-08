@@ -1,6 +1,6 @@
 import { createModuleHook } from './helper'
 
-export default createModuleHook({
+const { load, resolve } = createModuleHook({
   type: 'text',
   loader(rawSource) {
     const source = `export default ${JSON.stringify(rawSource)};`
@@ -11,3 +11,5 @@ export default createModuleHook({
     }
   },
 })
+
+export { load, resolve }

@@ -1,7 +1,7 @@
 import yaml from 'yaml'
 import { createModuleHook } from './helper'
 
-export default createModuleHook({
+const { load, resolve } = createModuleHook({
   type: 'yaml',
   loader(rawSource) {
     const source = yaml.parse(rawSource)
@@ -12,3 +12,5 @@ export default createModuleHook({
     }
   },
 })
+
+export { load, resolve }

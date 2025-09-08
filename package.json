@@ -35,8 +35,11 @@
       "src/xr.ts",
       "src/xn.ts",
       "src/x.ts",
-      "src/hooks/index.ts",
-      "src/hooks/register.ts"
+      "src/hooks/register.ts",
+      "src/hooks/text.ts",
+      "src/hooks/jsonc.ts",
+      "src/hooks/yaml.ts",
+      "src/hooks/tsx.ts"
     ],
     "format": [
       "esm"
