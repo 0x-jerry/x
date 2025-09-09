@@ -47,7 +47,7 @@
     "clean": true
   },
   "dependencies": {
-    "@0x-jerry/silver": "^1.2.2",
+    "@0x-jerry/silver": "^1.2.3",
     "@0x-jerry/utils": "^5.0.0",
     "decompress": "^4.2.1",
     "fs-extra": "^11.3.1",
