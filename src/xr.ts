@@ -7,7 +7,7 @@ import { exec } from './utils'
 const ins = sliver`
 v${version} @help @autocompletion
 
-xr <@command:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}
+xr <@command|_files:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}
 `
 
 ins.type('command', async () => {
