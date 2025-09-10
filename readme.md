@@ -88,7 +88,8 @@ cargo remove log
 Add this code to `~/.zshrc`
 
 ```zsh
-source <(x completions)
-source <(xr completions)
-source <(xn completions)
+source <(x completion)
+source <(xr completion)
+source <(xn completion)
 ```
+

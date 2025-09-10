@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
+import { readdir } from 'fs/promises'
+import { pathExists } from 'fs-extra/esm'
+import path from 'path'
 import { version } from '../package.json'
 import { getAvailableCommands, runScript } from './commands/run'
 import { exec } from './utils'
@@ -7,13 +10,34 @@ import { exec } from './utils'
 const ins = sliver`
 v${version} @help @autocompletion
 
-xr <@command|_files:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}
+xr <@scripts|bin|_files:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}
 `
 
-ins.type('command', async () => {
+ins.type('scripts', async () => {
   const allScripts = await getAvailableCommands()
 
   return allScripts
+})
+
+ins.type('bin', async () => {
+  let dir = process.cwd()
+
+  const binaries: string[] = []
+
+  do {
+    const binPath = path.join(dir, 'node_modules', '.bin')
+
+    if (await pathExists(binPath)) {
+      const files = await readdir(binPath)
+      for (const filename of files) {
+        binaries.push(filename)
+      }
+    }
+
+    dir = path.resolve(dir, '..')
+  } while (dir !== path.resolve(dir, '..'))
+
+  return binaries
 })
 
 async function defaultAction(_: string[], arg: ActionParsedArgs) {

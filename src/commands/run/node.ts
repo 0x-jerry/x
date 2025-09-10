@@ -1,4 +1,4 @@
-import { readFile, readdir } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { pathExists } from 'fs-extra'
 import type { TaskDetector } from './types'
@@ -36,23 +36,6 @@ export class NodeTaskDetecter implements TaskDetector {
     const json = JSON.parse(text)
 
     const tasks: Record<string, string> = json.scripts || {}
-
-    {
-      let dir = cwd
-
-      do {
-        const binPath = path.join(dir, 'node_modules', '.bin')
-
-        if (await pathExists(binPath)) {
-          const files = await readdir(binPath)
-          for (const filename of files) {
-            tasks[filename] ??= filename
-          }
-        }
-
-        dir = path.resolve(dir, '..')
-      } while (dir !== path.resolve(dir, '..'))
-    }
 
     return tasks
   }
