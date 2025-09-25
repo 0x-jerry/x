@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
-import { readdir } from 'fs/promises'
-import { pathExists } from 'fs-extra/esm'
-import path from 'path'
 import { version } from '../package.json'
 import { getAvailableCommands, runScript } from './commands/run'
+import { getBinariesPairs } from './commands/run/node'
 import { exec } from './utils'
 
 const ins = sliver`
@@ -19,26 +17,7 @@ ins.type('scripts', async () => {
   return allScripts
 })
 
-ins.type('bin', async () => {
-  let dir = process.cwd()
-
-  const binaries: string[] = []
-
-  do {
-    const binPath = path.join(dir, 'node_modules', '.bin')
-
-    if (await pathExists(binPath)) {
-      const files = await readdir(binPath)
-      for (const filename of files) {
-        binaries.push(filename)
-      }
-    }
-
-    dir = path.resolve(dir, '..')
-  } while (dir !== path.resolve(dir, '..'))
-
-  return binaries
-})
+ins.type('bin', () => getBinariesPairs().then((resp) => Object.keys(resp)))
 
 async function defaultAction(_: string[], arg: ActionParsedArgs) {
   const [commandOrFile, ...params] = arg._

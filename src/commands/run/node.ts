@@ -1,6 +1,6 @@
-import { readFile } from 'node:fs/promises'
+import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
-import { pathExists } from 'fs-extra'
+import { pathExists } from 'fs-extra/esm'
 import type { TaskDetector } from './types'
 
 export class NodeTaskDetecter implements TaskDetector {
@@ -39,4 +39,25 @@ export class NodeTaskDetecter implements TaskDetector {
 
     return tasks
   }
+}
+
+export async function getBinariesPairs() {
+  let dir = process.cwd()
+
+  const binaries: Record<string, string> = {}
+
+  do {
+    const binPath = path.join(dir, 'node_modules', '.bin')
+
+    if (await pathExists(binPath)) {
+      const files = await readdir(binPath)
+      for (const filename of files) {
+        binaries[filename] = path.join(binPath, filename)
+      }
+    }
+
+    dir = path.resolve(dir, '..')
+  } while (dir !== path.resolve(dir, '..'))
+
+  return binaries
 }

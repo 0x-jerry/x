@@ -2,7 +2,7 @@ import path from 'node:path'
 import pc from 'picocolors'
 import { exec } from '../utils.ts'
 import { DenoTaskDetecter } from './run/deno.ts'
-import { NodeTaskDetecter } from './run/node.ts'
+import { getBinariesPairs, NodeTaskDetecter } from './run/node.ts'
 import { RustTaskDetecter } from './run/rust.ts'
 import type { TaskDetector } from './run/types.ts'
 
@@ -26,14 +26,38 @@ export async function runScript(command: string, params: string[] = []) {
     }
   }
 
+  if (await runAsBinary(command, params)) {
+    return
+  }
+
   const allScripts = await getAvailableCommands()
 
   console.log(
     pc.red('['),
     pc.cyan(`${command}`),
-    pc.red('] not exists in the list: '),
+    pc.red('] does not exists in the list: '),
     allScripts.map((name) => pc.cyan(name)).join(', '),
   )
+}
+
+/**
+ * @returns true if command is a binary
+ */
+async function runAsBinary(command: string, params: string[]) {
+  const cwd = process.cwd()
+  const binariesPair = await getBinariesPairs()
+  const binaries = Object.keys(binariesPair)
+
+  if (binaries.includes(command)) {
+    const binPaths = await new NodeTaskDetecter().binaryPaths(cwd)
+    const env = makeEnv(binPaths || [])
+
+    await exec(command, params, { env })
+
+    return true
+  }
+
+  return false
 }
 
 function makeEnv(extraPaths: string[]) {
