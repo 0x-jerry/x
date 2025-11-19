@@ -31,9 +31,38 @@ xr dev
 deno run -A main.ts
 ```
 
+`xr` can execute js/ts file directly, also support import any `string/yaml/jsonc` file directly with import attribute.
+
+Example:
+
+`script.ts`
+
+```ts
+const count: number = 3;
+console.log(count)
+
+import textData from './test.txt' with { type: 'text' }
+console.log(textData) // => typeof textData === 'string'
+
+import yamlData from './test.yaml' with { type: 'yaml' }
+console.log(yamlData) // => typeof yamlData === 'object'
+
+import jsoncData from './test.jsonc' with { type: 'jsonc' }
+console.log(jsoncData) // => typeof jsoncData === 'object'
+
+import sqlStr from './files/test.sql' with { type: 'text' }
+console.log(sqlStr) // => typeof sqlStr === 'string'
+```
+
+Execute it:
+
+```sh
+xr ./script.ts
+```
+
 ## Dependency Manager `xn`
 
-`xn` command can install modules by detect the correct tool, it detects lockfile to decide which dependency manager tools should be used.
+`xn` command can install modules by detect the correct tool automatically, it detects lockfile to decide which dependency manager tool should be used.
 
 Example: install packages in a node project with `pnpm-lock.yaml`
 
@@ -85,11 +114,12 @@ cargo remove log
 
 ## Command Completions
 
-Add this code to `~/.zshrc`
+This feature only support zsh.
+
+Add those code to `~/.zshrc`
 
 ```zsh
 source <(x completion)
 source <(xr completion)
 source <(xn completion)
 ```
-
