@@ -38,8 +38,7 @@
       "src/hooks/register.ts",
       "src/hooks/text.ts",
       "src/hooks/jsonc.ts",
-      "src/hooks/yaml.ts",
-      "src/hooks/tsx.ts"
+      "src/hooks/yaml.ts"
     ],
     "format": [
       "esm"

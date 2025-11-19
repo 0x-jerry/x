@@ -1,7 +1,9 @@
 import { register } from 'node:module'
 
+import { register as registerTsx } from 'tsx/esm/api'
+
 // tsx must be the first one, the order is matters.
-register('./tsx.js', import.meta.url)
+registerTsx()
 
 register('./text.js', import.meta.url)
 register('./jsonc.js', import.meta.url)
