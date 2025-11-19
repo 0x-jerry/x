@@ -131,7 +131,7 @@ export async function detectPkgManagerCommand(
     return 'pnpm'
   }
 
-  const bunLockFile = join(cwd, 'bun.lockb')
+  const bunLockFile = join(cwd, 'bun.lock')
   if (exists(bunLockFile)) {
     return 'bun'
   }
