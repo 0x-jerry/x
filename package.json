@@ -8,6 +8,16 @@
   "author": "Jerry Wang <x.jerry.wang@gmail.com>",
   "license": "MIT",
   "type": "module",
+  "description": "Some useful command for myself.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/0x-jerry/x/issues"
+  },
+  "homepage": "https://github.com/0x-jerry/x#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
