@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises'
 import path, { join } from 'node:path'
-import { pathExists } from 'fs-extra'
 import pc from 'picocolors'
 import { exec, exists, flagOptionToStringArray } from '../../utils'
 import type { DependencyManager } from './types'
@@ -13,7 +12,11 @@ interface NodeInstallOption {
 
 export class NodeDependencyManager implements DependencyManager {
   async check() {
-    return pathExists(path.join(process.cwd(), 'package.json'))
+    const cwd = process.cwd()
+
+    const pkgInfo = await detectPackageRoot(cwd)
+
+    return !!pkgInfo
   }
 
   async install(option?: Record<string, string>): Promise<void> {
@@ -107,7 +110,11 @@ async function runDepManagerCommand(
   action: DepManagerActionCommand,
   ...params: string[]
 ) {
-  if (!(await getPkgJson())) {
+  const cwd = process.cwd()
+
+  const pkgInfo = await detectPackageRoot(cwd)
+
+  if (!pkgInfo) {
     console.log(
       yellow(
         `Can't find package.json! Please ensure that current path is a node project.`,
@@ -116,16 +123,16 @@ async function runDepManagerCommand(
     return
   }
 
-  const depInstallerCommand = await detectPkgManagerCommand()
+  const pm = pkgInfo.pm || 'pnpm'
 
-  const actionName = depInstallerCommandMapper[action][depInstallerCommand]
+  const actionName = depInstallerCommandMapper[action][pm]
 
-  await exec(depInstallerCommand, [actionName, ...params])
+  await exec(pm, [actionName, ...params])
 }
 
-export async function detectPkgManagerCommand(
+async function detectPkgManagerCommand(
   cwd = process.cwd(),
-): Promise<DepManagerCommand> {
+): Promise<DepManagerCommand | null> {
   const pnpmLockFile = join(cwd, 'pnpm-lock.yaml')
   if (exists(pnpmLockFile)) {
     return 'pnpm'
@@ -146,10 +153,10 @@ export async function detectPkgManagerCommand(
     return 'npm'
   }
 
-  return 'pnpm'
+  return null
 }
 
-export async function getPkgJson(
+async function getPkgJson(
   cwd = process.cwd(),
 ): Promise<PackageJson | false> {
   const jsonFile = join(cwd, 'package.json')
@@ -188,4 +195,44 @@ export function getTypePackageName(pkg: string) {
     return `@types/${scope.slice(1)}__${pkgName}`
   }
   return `@types/${name}`
+}
+
+interface ProjectInfo {
+  pkgDir: string
+  package: PackageJson
+  pm?: DepManagerCommand | null
+  subProject?: ProjectInfo
+}
+
+async function detectPackageRoot(cwd: string, subProjectInfo?: ProjectInfo): Promise<ProjectInfo | null> {
+  const pkg = await getPkgJson(cwd)
+
+  if (!pkg) {
+    return detectParentDir(subProjectInfo)
+  }
+
+  const pm = await detectPkgManagerCommand(cwd)
+
+  const info: ProjectInfo = {
+    pkgDir: cwd,
+    package: pkg,
+    pm,
+    subProject: subProjectInfo,
+  }
+
+  if (pm) {
+    return info
+  }
+
+  return detectParentDir(info)
+
+  async function detectParentDir(subProjectInfo?: ProjectInfo) {
+    const parentDir = path.dirname(cwd)
+
+    if (parentDir === cwd) {
+      return subProjectInfo ?? null
+    }
+
+    return detectPackageRoot(parentDir, subProjectInfo)
+  }
 }
