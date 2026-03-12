@@ -3,8 +3,8 @@ import { pathExists } from 'fs-extra'
 import type { TaskDetector } from './types'
 
 export class RustTaskDetecter implements TaskDetector {
-  check(cwd: string): Promise<boolean> {
-    return pathExists(path.join(cwd, 'Cargo.toml'))
+  async check(cwd: string): Promise<string | undefined> {
+    return (await pathExists(path.join(cwd, 'Cargo.toml'))) ? cwd : undefined
   }
 
   async task(_cwd: string, _taskName: string): Promise<string | undefined> {

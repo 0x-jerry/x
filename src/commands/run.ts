@@ -13,14 +13,16 @@ export async function runScript(command: string, params: string[] = []) {
     new RustTaskDetecter(),
   ]
 
-  const cwd = process.cwd()
+  let cwd = process.cwd()
 
   for (const taskDetector of taskDetectors) {
-    if (await taskDetector.check(cwd)) {
-      const task = await taskDetector.task(cwd, command)
+    const workspaceDir = await taskDetector.check(cwd)
+
+    if (workspaceDir) {
+      const task = await taskDetector.task(workspaceDir, command)
       if (task) {
-        const env = makeEnv((await taskDetector.binaryPaths?.(cwd)) || [])
-        await exec(task, params, { env })
+        const env = makeEnv((await taskDetector.binaryPaths?.(workspaceDir)) || [])
+        await exec(task, params, { env, cwd: workspaceDir })
         return
       }
     }

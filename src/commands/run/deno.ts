@@ -5,11 +5,13 @@ import { parse } from 'jsonc-parser'
 import type { TaskDetector } from './types'
 
 export class DenoTaskDetecter implements TaskDetector {
-  check(cwd: string): Promise<boolean> {
-    return (
+  async check(cwd: string): Promise<string | undefined> {
+    const has = await (
       pathExists(path.join(cwd, 'deno.json')) ||
       pathExists(path.join(cwd, 'deno.jsonc'))
     )
+
+    return has ? cwd : undefined
   }
 
   async task(cwd: string, taskName: string): Promise<string | undefined> {
