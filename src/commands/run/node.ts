@@ -2,7 +2,7 @@ import { readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { pathExists } from 'fs-extra/esm'
 import type { TaskDetector } from './types'
-import { detectPackageRoot } from '../utils/node'
+import { detectPackageRoot, type ProjectInfo } from '../utils/node'
 
 export class NodeTaskDetecter implements TaskDetector {
   async binaryPaths(cwd: string): Promise<string[]> {
@@ -23,9 +23,9 @@ export class NodeTaskDetecter implements TaskDetector {
   }
 
   async check(cwd: string): Promise<string | undefined> {
-    const pkgInfo = await detectPackageRoot(cwd)
+    const rootPkgInfo = await detectPackageRoot(cwd)
 
-    return pkgInfo?.pkgDir
+    return getClosestProjectInfo(rootPkgInfo)?.pkgDir
   }
 
   async task(cwd: string, taskName: string): Promise<string | undefined> {
@@ -33,12 +33,26 @@ export class NodeTaskDetecter implements TaskDetector {
   }
 
   async tasks(cwd: string) {
-    const pkgInfo = await detectPackageRoot(cwd)
+    const rootPkgInfo = await detectPackageRoot(cwd)
 
-    const tasks: Record<string, string> = pkgInfo?.package.scripts || {}
+    const tasks: Record<string, string> = getClosestProjectInfo(rootPkgInfo)?.package.scripts || {}
 
     return tasks
   }
+}
+
+function getClosestProjectInfo(rootPkgInfo?: ProjectInfo | null) {
+  if (!rootPkgInfo) {
+    return undefined
+  }
+
+  let pkgInfo: ProjectInfo | null | undefined = rootPkgInfo
+
+  while (pkgInfo.subProject) {
+    pkgInfo = pkgInfo.subProject
+  }
+
+  return pkgInfo
 }
 
 export async function getBinariesPairs() {
