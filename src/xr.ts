@@ -4,6 +4,7 @@ import { version } from '../package.json'
 import { getAvailableCommands, runScript } from './commands/run'
 import { getBinariesPairs } from './commands/run/node'
 import { exec } from './utils'
+import { detectPackageRoot } from './commands/utils/node'
 
 const ins = sliver`
 v${version} @help @autocompletion
@@ -24,11 +25,19 @@ async function defaultAction(_: string[], arg: ActionParsedArgs) {
 
   try {
     if (isJsFile(commandOrFile)) {
-      await exec(
-        'node',
-        ['--import', import.meta.resolve(`./hooks/register.js`), commandOrFile],
-        { silent: true },
-      )
+      const pkg = await detectPackageRoot(process.cwd())
+
+      if (pkg?.pm === 'bun') {
+        await exec('bun', ['run', commandOrFile],
+          { silent: true },
+        )
+      } else {
+        await exec(
+          'node',
+          ['--import', import.meta.resolve(`./hooks/register.js`), commandOrFile],
+          { silent: true },
+        )
+      }
     } else {
       await runScript(commandOrFile, params)
     }
