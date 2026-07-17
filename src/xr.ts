@@ -7,7 +7,7 @@ import { exec } from './utils'
 import { detectPackageRoot } from './commands/utils/node'
 
 const ins = silver`
-v${version} @help @autocompletion
+v${version} @help @autocomplete
 
 xr <@scripts|bin|_files:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}
 `

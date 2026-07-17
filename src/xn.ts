@@ -4,7 +4,7 @@ import { version } from '../package.json'
 import { DepManager } from './commands/depManager'
 
 silver`
-v${version} @help @autocompletion
+v${version} @help @autocomplete
 
 xn, is a dependency manage tool, it is support node/deno/cargo. ${defaultAction}
 

@@ -9,7 +9,7 @@ bootstrap({
 })
 
 silver`
-v${version} @autocompletion
+v${version} @autocomplete
 
 x, has some useful subcommand.
 
