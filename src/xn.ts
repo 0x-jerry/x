@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
+import { type ActionParsedArgs, silver } from '@0x-jerry/silver'
 import { version } from '../package.json'
 import { DepManager } from './commands/depManager'
 
-sliver`
+silver`
 v${version} @help @autocompletion
 
 xn, is a dependency manage tool, it is support node/deno/cargo. ${defaultAction}

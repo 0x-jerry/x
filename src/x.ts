@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
+import { type ActionParsedArgs, silver } from '@0x-jerry/silver'
 import { bootstrap } from 'global-agent'
 import { version } from '../package.json'
 import { downloadGitRepo } from './commands/downloadGitRepo'
@@ -8,7 +8,7 @@ bootstrap({
   environmentVariableNamespace: '',
 })
 
-sliver`
+silver`
 v${version} @autocompletion
 
 x, has some useful subcommand.

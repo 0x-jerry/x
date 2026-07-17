@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import { type ActionParsedArgs, sliver } from '@0x-jerry/silver'
+import { type ActionParsedArgs, silver } from '@0x-jerry/silver'
 import { version } from '../package.json'
 import { getAvailableCommands, runScript } from './commands/run'
 import { getBinariesPairs } from './commands/run/node'
 import { exec } from './utils'
 import { detectPackageRoot } from './commands/utils/node'
 
-const ins = sliver`
+const ins = silver`
 v${version} @help @autocompletion
 
 xr <@scripts|bin|_files:command-or-file> #stopEarly, run npm script or ts/js file quickly. ${defaultAction}

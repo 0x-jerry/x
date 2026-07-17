@@ -7,21 +7,7 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    uses: 0x-jerry/workflows/.github/workflows/changelog.yml@main
     permissions:
       contents: write
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v6
-        with:
-          node-version: latest
-
-      - name: Generate Release Note
-        run: npx changelogithub --output GEN_CHANGELOG.md
-      
-      - uses: softprops/action-gh-release@v2
-        with:
-          body_path: GEN_CHANGELOG.md
+      id-token: write
