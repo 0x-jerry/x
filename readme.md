@@ -119,7 +119,9 @@ This feature only support zsh.
 Add those code to `~/.zshrc`
 
 ```zsh
-source <(x completion)
-source <(xr completion)
-source <(xn completion)
+source <(xr completion zsh)
+```
+
+```pwsh
+Invoke-Expression (xr complete powershell | Out-String)
 ```
